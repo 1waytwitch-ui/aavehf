@@ -110,12 +110,12 @@ if st.button("🚀 Lancer la simulation"):
     st.markdown(f"📊 **Seuil de liquidation (LTV) global calculé** : `{round(ltv_global * 100, 2)} %`")
     st.markdown(f"🧮 **Health Factor global** : `{hf}`")
 
-    if hf < 1:
-        st.error("⚠️ Health Factor < 1 → liquidation possible imminente !")
-    elif hf < 1.5:
-        st.warning("⚠️ Health Factor faible → risque modéré")
+    if hf < 1.25:
+        st.error("⚠️ Health Factor critique (< 1.25) → liquidation possible imminente !")
+    elif hf < 2:
+        st.warning("⚠️ Health Factor modéré (entre 1.25 et 2) → position à surveiller")
     else:
-        st.success("✅ Position saine → risque faible")
+        st.success("✅ Position saine (≥ 2) → risque faible")
 
     # Résumé par token
     st.markdown("## 📒 Détail des tokens déposés")
