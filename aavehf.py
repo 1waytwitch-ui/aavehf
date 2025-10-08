@@ -46,25 +46,14 @@ def calc_health_factor(collateral_list, borrow_list):
     hf = total_collat_usd / total_borrow_usd
     return round(hf, 2), total_collat_usd, total_borrow_usd
 
-def calc_token_liquidation_price(token, total_collat_usd, total_borrow_usd, ltv_global):
+def calc_token_liquidation_price(token, ltv_global):
     """
-    Calcule le prix de liquidation du token collatéral
-    basé sur sa contribution dans le total du collatéral ajusté.
+    Calcule le prix de liquidation du token collatéral en fonction du LTV global.
     """
-    collateral_value = token["amount_usd"]
-    if total_collat_usd == 0 or collateral_value == 0:
-        return None, None
+    prix_spot = token["price"]
+    prix_liquidation = prix_spot * (1 - ltv_global)  # Le prix doit baisser en fonction du LTV
 
-    collat_pct = collateral_value / total_collat_usd
-    dette_supportee = total_borrow_usd * collat_pct
-
-    # Le prix de liquidation est recalculé en fonction du LTV global calculé
-    prix_liquidation = token["price"] * (dette_supportee / (collateral_value * ltv_global)) if ltv_global > 0 else None
-
-    if prix_liquidation is None:
-        return None, None
-
-    baisse_pct = round(100 - (prix_liquidation / token["price"] * 100), 2)
+    baisse_pct = round((1 - prix_liquidation / prix_spot) * 100, 2) if prix_spot > 0 else None
 
     return round(prix_liquidation, 2), baisse_pct
 
@@ -131,7 +120,7 @@ if st.button("🚀 Lancer la simulation"):
     # Résumé par token
     st.markdown("## 📒 Détail des tokens déposés")
     for token in collateral_tokens:
-        liquidation_price, baisse_pct = calc_token_liquidation_price(token, total_collat, total_borrow, ltv_global)
+        liquidation_price, baisse_pct = calc_token_liquidation_price(token, ltv_global)
         st.markdown(f'<div class="result-box">', unsafe_allow_html=True)
         st.markdown(f"### 🪙 {token['name'].upper()}")
         st.markdown(f"💰 Prix spot (marché) : **${token['price']}**")
