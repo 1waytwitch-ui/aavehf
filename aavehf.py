@@ -1,7 +1,7 @@
 import streamlit as st
 
 # ---------------- CONFIG ----------------
-st.set_page_config(page_title="📉 Simulateur DeFi Collateral/Borrow", page_icon="🪙", layout="centered")
+st.set_page_config(page_title="📉 Simulateur Collateral/Borrow", page_icon="🪙", layout="centered")
 
 st.markdown("""
 <style>
@@ -58,8 +58,8 @@ def calc_token_liquidation_price(token, ltv_global):
     return round(prix_liquidation, 2), baisse_pct
 
 # ---------------- INTERFACE ----------------
-st.title("🪙 Simulateur DeFi : Collatéral & Emprunt Multi-token")
-st.markdown("Gérez indépendamment vos positions de **lending** et **borrowing**, comme sur Aave, Compound ou Venus.")
+st.title("🪙 Simulateur cCollatéral & Emprunt Multi-token")
+st.markdown("Gérez indépendamment vos positions de **lending** et **borrowing**, comme sur Aave, Compound ...")
 
 # ---------- Lending ----------
 st.subheader("🔐 Tokens déposés en collatéral")
@@ -71,7 +71,7 @@ for i in range(nb_collat):
     col1, col2 = st.columns(2)
     with col1:
         name = st.text_input(f"Nom du token", value=f"ETH", key=f"collat_name_{i}")
-        price = st.number_input(f"Prix spot (marché) (USD)", value=1700.0, step=10.0, key=f"collat_price_{i}")
+        price = st.number_input(f"Prix de référence (marché) (USD)", value=1700.0, step=10.0, key=f"collat_price_{i}")
     with col2:
         amount = st.number_input(f"Montant déposé (USD)", value=850.0, step=10.0, key=f"collat_amt_{i}")
     collateral_tokens.append({
@@ -123,7 +123,7 @@ if st.button("🚀 Lancer la simulation"):
         liquidation_price, baisse_pct = calc_token_liquidation_price(token, ltv_global)
         st.markdown(f'<div class="result-box">', unsafe_allow_html=True)
         st.markdown(f"### 🪙 {token['name'].upper()}")
-        st.markdown(f"💰 Prix spot (marché) : **${token['price']}**")
+        st.markdown(f"💰 Prix de référence (marché) : **${token['price']}**")
         st.markdown(f"💥 Prix de liquidation : **${liquidation_price}**")
         st.markdown(f"📉 Baisse nécessaire : **{baisse_pct}%**")
         st.markdown("</div>", unsafe_allow_html=True)
