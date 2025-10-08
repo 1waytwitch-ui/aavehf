@@ -58,7 +58,7 @@ def calc_token_liquidation_price(token, ltv_global):
     return round(prix_liquidation, 2), baisse_pct
 
 # ---------------- INTERFACE ----------------
-st.title("🪙 Simulateur cCollatéral & Emprunt Multi-token")
+st.title("🪙 Simulateur Collatéral & Emprunt Multi-token")
 st.markdown("Gérez indépendamment vos positions de **lending** et **borrowing**, comme sur Aave, Compound ...")
 
 # ---------- Lending ----------
